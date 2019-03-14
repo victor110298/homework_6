@@ -1,5 +1,13 @@
 package store;
 
-public class Tulip extends Flowers{
-    public static final int PRICE = 45;
+public class Tulip extends Flower {
+
+    public Tulip() {
+        super(45);
+    }
+
+    @Override
+    public String toString() {
+        return "Tulip";
+    }
 }

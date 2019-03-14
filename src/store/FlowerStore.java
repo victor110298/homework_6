@@ -1,77 +1,57 @@
 package store;
 
-import java.util.ArrayList;
-
 public class FlowerStore {
-    private ArrayList<String> firstBouquet;
-    private ArrayList<String> secondBouquet;
-    private int walletAfter;
-    private int walletBefore = 1000;
+    private int wallet;
 
-    public ArrayList<String> sell(int countOfRose, int countOfCamomile, int countOfTulip) {
-        int i = countOfRose + countOfCamomile + countOfTulip;
-        ArrayList<String> firstListofFlowers = new ArrayList<>();
-        int j = 0;
-        while (j < countOfRose) {
-            firstListofFlowers.add("Rose");
-            countOfRose--;
-            walletAfter += Rose.PRICE;
-        }
-        while (j < countOfCamomile) {
-            firstListofFlowers.add("Camomile");
-            countOfCamomile--;
-            walletAfter += Camomile.PRICE;
-
-        }
-        while (j < countOfTulip) {
-            firstListofFlowers.add("Tulip");
-            countOfTulip--;
-            walletAfter += Tulip.PRICE;
-        }
-        firstBouquet = firstListofFlowers;
-        return firstBouquet;
+    public int getWallet() {
+        return wallet;
     }
 
-    public ArrayList<String> sellSequence(int countOfRose, int countOfCamomile, int countOfTulip) {
-        int i = countOfRose + countOfCamomile + countOfTulip;
-        ArrayList<String> listOfFlowers = new ArrayList<>();
-        int j = 0;
-        while (j < i) {
-            if (countOfRose > 0) {
-                listOfFlowers.add("Rose");
-                countOfRose--;
-                j++;
-                walletAfter += Rose.PRICE;
-
-            }
-            if (countOfCamomile > 0) {
-                listOfFlowers.add("Camomile");
-                countOfCamomile--;
-                j++;
-                walletAfter += Camomile.PRICE;
-            }
-            if (countOfTulip > 0) {
-                listOfFlowers.add("Tulip");
-                countOfTulip--;
-                j++;
-                walletAfter += Tulip.PRICE;
-            }
+    public Flower[] sell(int countOfRoses, int countOfCamomoles, int countOfTulips) {
+        int numberOfFlowers = countOfRoses + countOfTulips + countOfCamomoles;
+        Flower[] bouquet = new Flower[numberOfFlowers];
+        for (int i = 0; i < countOfRoses; i++) {
+            bouquet[i] = new Rose();
         }
-        secondBouquet = listOfFlowers;
-        return secondBouquet;
+        for (int i = countOfRoses; i < countOfRoses + countOfTulips; i++) {
+            bouquet[i] = new Tulip();
+        }
+        for (int i = countOfRoses + countOfTulips; i < numberOfFlowers; i++) {
+            bouquet[i] = new Camomile();
+        }
+        balance(bouquet);
+        return bouquet;
     }
 
-    public void print() {
-        System.out.print("First bouquet: ");
-        for (int i = 0; i < firstBouquet.size(); i++) {
-            System.out.print(firstBouquet.get(i) + ", ");
+    public Flower[] sellSequence(int countOfRoses, int countOFTulips, int countOfCamomiles) {
+        int numberOfFlowers = countOfRoses + countOFTulips + countOfCamomiles;
+        Flower[] bouquet = new Flower[numberOfFlowers];
+        int i = 0;
+        while (i < numberOfFlowers) {
+            if (countOfRoses > 0) {
+                bouquet[i] = new Rose();
+                countOfRoses--;
+                i++;
+            }
+            if (countOFTulips > 0) {
+                bouquet[i] = new Tulip();
+                countOFTulips--;
+                i++;
+            }
+            if (countOfCamomiles > 0) {
+                bouquet[i] = new Camomile();
+                countOfCamomiles--;
+                i++;
+            }
         }
-        System.out.print("\nSecond bouquete: ");
-        for (int i = 0; i < secondBouquet.size(); i++) {
-            System.out.print(secondBouquet.get(i) + ", ");
+        balance(bouquet);
+        return bouquet;
+    }
+
+    private void balance(Flower[] bouquet) {
+        for (int i = 0; i < bouquet.length; i++) {
+            wallet += bouquet[i].getPrice();
         }
-        System.out.println("\nBefore sell was " + walletBefore + " grn! " + " After sell --- " + (walletAfter + walletBefore) + " grn");
     }
 }
-
 
